@@ -1,7 +1,5 @@
 def distribute_money(total_sum, num_banks):
-    """
-    Генерирует все возможные варианты распределения суммы денег по банкам.
-    """
+  
     def distribute(current_bank, remaining_sum, current_distribution):
         if current_bank == num_banks - 1:
             distribution = current_distribution + [remaining_sum]
