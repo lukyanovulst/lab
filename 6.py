@@ -42,7 +42,6 @@ def G_iter(n):
 
 
 def measure_time(func, n):
-    """Измеряет время выполнения функции с автоматической регулировкой числа повторений."""
     number = 100  # Начальное число повторений
     time = timeit.timeit(lambda: func(n), number=number)
 
@@ -68,7 +67,6 @@ def main():
     for i in range(1, n + 1):
         results['n'].append(i)
 
-        # Рекурсивные вычисления
         try:
             time_rec = measure_time(F_rec, i) * 1000
             f_rec = F_rec(i)
@@ -77,7 +75,6 @@ def main():
             time_rec = None
             f_rec = None
 
-        # Итерационные вычисления
         try:
             time_iter = measure_time(F_iter, i) * 1000
             f_iter = F_iter(i)
@@ -91,7 +88,6 @@ def main():
         results['time_rec'].append(time_rec)
         results['time_iter'].append(time_iter)
 
-    # Вывод результатов
     print("\nРезультаты вычислений:")
     print(f"{'n':<5}{'F рекурсивно':<20}{'F итерационно':<20}{'Время рекурсии (мс)':<20}{'Время итерации (мс)':<20}")
     for i in range(n):
@@ -101,7 +97,6 @@ def main():
               f"{results['time_rec'][i]:<20.4f}"
               f"{results['time_iter'][i]:<20.4f}")
 
-    # Визуализация
     plt.plot(results['n'], results['time_rec'], 'r-', label='Рекурсия')
     plt.plot(results['n'], results['time_iter'], 'b-', label='Итерация')
     plt.title('время сравнения итерации и рекурсии')
