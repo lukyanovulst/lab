@@ -1,9 +1,7 @@
 import itertools
 
 def distribute_money(total_sum, num_banks):
-    """
-    Генерирует все возможные варианты распределения суммы денег по банкам (с использованием itertools).
-    """
+ 
     if num_banks == 0:
         if total_sum == 0:
             print([0]*num_banks)
