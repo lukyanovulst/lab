@@ -78,7 +78,6 @@ print_matrix(A, "Матрица A")
 F = copy.deepcopy(A)
 F_np = np.array(F)
 
-# Правильные вычисления для 18 варианта
 count_greater_k = count_numbers_greater_than_k_in_odd_columns_C(F, n, k)
 product_odd_rows = product_of_numbers_in_odd_rows(F, n)
 
