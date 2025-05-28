@@ -2,7 +2,6 @@ import math
 import timeit
 import matplotlib.pyplot as plt
 
-
 # Рекурсивная функция F(n)
 def F_rec(n):
     if n == 1:
@@ -10,13 +9,11 @@ def F_rec(n):
     else:
         return (-1) ** n * (F_rec(n - 1) - G_rec(n - 1) / math.factorial(2 * n))
 
-
 def G_rec(n):
     if n == 1:
         return 1
     else:
         return F_rec(n - 1) + G_rec(n - 1)
-
 
 # Итерационная функция F(n)
 def F_iter(n):
@@ -29,7 +26,6 @@ def F_iter(n):
         G[i] = F[i - 1] + G[i - 1]
     return F[n]
 
-
 def G_iter(n):
     F = [0] * (n + 1)
     G = [0] * (n + 1)
@@ -40,18 +36,15 @@ def G_iter(n):
         G[i] = F[i - 1] + G[i - 1]
     return G[n]
 
-
 def measure_time(func, n):
     number = 100  
     time = timeit.timeit(lambda: func(n), number=number)
 
-    # Автоматическая регулировка числа повторений
     while time < 0.1 and number < 10000:
         number *= 10
         time = timeit.timeit(lambda: func(n), number=number)
 
     return time / number  
-
 
 def main():
     n = int(input("Введите натуральное число N: "))
