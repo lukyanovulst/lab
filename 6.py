@@ -42,7 +42,7 @@ def G_iter(n):
 
 
 def measure_time(func, n):
-    number = 100  # Начальное число повторений
+    number = 100  
     time = timeit.timeit(lambda: func(n), number=number)
 
     # Автоматическая регулировка числа повторений
@@ -50,7 +50,7 @@ def measure_time(func, n):
         number *= 10
         time = timeit.timeit(lambda: func(n), number=number)
 
-    return time / number  # Возвращаем среднее время выполнения
+    return time / number  
 
 
 def main():
