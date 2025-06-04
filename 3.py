@@ -15,50 +15,33 @@ def print_matrix(m, title):
 
 def count_zeros_in_odd_columns_area4(matrix, n):
     count = 0
-    half_n = n // 2
-    for i in range(half_n):
-        for j in range(half_n):
-            if j % 2 != 0 and matrix[i][j] == 0:
+    for i in range(n//2 + 1):
+        for j in range(i + 1, n - i):
+            if j % 2 == 1 and matrix[i][j] == 0:
                 count += 1
     return count
 
-def product_in_odd_rows_area1(matrix, n):
-    product = 1
-    half_n = n // 2
-    for i in range(half_n):
-        if i % 2 != 0:
-            for j in range(half_n, n):
-                product *= matrix[i][j]
-    return product
+def sum_in_odd_rows_area1(matrix, n):
+    total = 0
+    for i in range(n):
+        for j in range(n - i, n):
+            if i % 2 == 0:
+                total += matrix[i][j]
+    return total
 
 def swap_areas_1_2_symmetrically(matrix, n):
-    half_n = n // 2
-    for i in range(half_n):
-        for j in range(half_n):
-            matrix[i][j + half_n], matrix[i + half_n][j + half_n] = \
-                matrix[i + half_n][j + half_n], matrix[i][j + half_n]
+    for i in range(n):
+        for j in range(n):
+            if i >= j and i + j >= n - 1:
+                ii, jj = n - 1 - j, n - 1 - i
+                matrix[i][j], matrix[ii][jj] = matrix[ii][jj], matrix[i][j]
 
 def swap_areas_2_3_asymmetrically(matrix, n):
-    half_n = n // 2
-    for i in range(half_n):
-        for j in range(half_n):
-            matrix[i + half_n][j + half_n], matrix[i + half_n][j] = \
-                matrix[i + half_n][j], matrix[i + half_n][j + half_n]
-
-def matrix_multiply(A, F, n):
-    AF = [[sum(A[i][k] * F[k][j] for k in range(n)) for j in range(n)] for i in range(n)]
-    return AF
-
-def matrix_transpose(matrix, n):
-    AT = [[matrix[j][i] for j in range(n)] for i in range(n)]
-    return AT
-
-def matrix_scalar_multiply(matrix, scalar):
-    return [[scalar * x for x in row] for row in matrix]
-
-def matrix_addition(matrix1, matrix2):
-    return [[matrix1[i][j] + matrix2[i][j] for j in range(len(matrix1))] for i in range(len(matrix1))]
-
+    for i in range(n):
+        for j in range(n):
+            if i > j and i + j < n - 1:
+                ii, jj = n - 1 - j, n - 1 - i
+                matrix[i][j], matrix[ii][jj] = matrix[ii][jj], matrix[i][j]
 
 k = int(input('Введите число k: '))
 n = int(input('Введите число n: '))
@@ -72,28 +55,31 @@ except Exception as e:
     print(f"Ошибка при чтении матрицы из файла: {e}")
     exit()
 
-print_matrix(A, "Матрица A")
+print_matrix(A, "матрица A")
 
 F = copy.deepcopy(A)
 
 zeros_area4 = count_zeros_in_odd_columns_area4(F, n)
-product_area1 = product_in_odd_rows_area1(F, n)
+sum_area1 = sum_in_odd_rows_area1(F, n)
 
-if zeros_area4 * k > product_area1:
+if zeros_area4 > sum_area1:
     swap_areas_1_2_symmetrically(F, n)
 else:
     swap_areas_2_3_asymmetrically(F, n)
 
 print_matrix(F, "Матрица F")
 
-AF = matrix_multiply(A, F, n)
+AF = [[sum(A[i][m] * F[m][j] for m in range(n)) for j in range(n)] for i in range(n)]
 print_matrix(AF, "A*F")
 
-FT = matrix_transpose(F, n)
-print_matrix(FT, "F^T")
+K_AF = [[k * x for x in row] for row in AF]
+print_matrix(K_AF, "K*(A*F)")
 
-K_FT = matrix_scalar_multiply(FT, k)
-print_matrix(K_FT, "K * F^T")
+AT = [[A[j][i] for j in range(n)] for i in range(n)]
+print_matrix(AT, "A^T")
 
-Result = matrix_addition(AF, K_FT)
-print_matrix(Result, "A * F + K * F^T ")
+K_AT = [[k * x for x in row] for row in AT]
+print_matrix(K_AT, "K*A^T")
+
+result = [[K_AF[i][j] - K_AT[i][j] for j in range(n)] for i in range(n)]
+print_matrix(result, "K*(A*F) - K*A^T")
